@@ -1,0 +1,37 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+      "tslint:recommended"
+    ],
+    "rules": {
+      "quotemark": [
+        true,
+        "single"
+      ],
+      "semicolon": [
+        true,
+        "always"
+      ],
+      "trailing-comma": [
+        false
+      ],
+      "no-console": [
+        true,
+        "log"
+      ],
+      "whitespace": [
+        false,
+        "check-module"
+      ],
+      "variable-name": {
+        "options": [
+          "ban-keywords",
+          "check-format",
+          "allow-leading-underscore",
+          "allow-pascal-case"
+        ]
+      }
+    },
+    "rulesDirectory": []
+  }
+  
