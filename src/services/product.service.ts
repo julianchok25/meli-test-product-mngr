@@ -7,9 +7,8 @@ import { restService } from './rest.service';
 class ProductService {
 
     public async getProduct(queryParams: any): Promise<any> {
-        console.log(queryParams);
-        const producto = 'gafas';
-        const url = `${SERVICES_PATHS.productSearch}?q=${producto}`;
+
+        const url = `${SERVICES_PATHS.productSearch}?q=${queryParams.q}`;
 
         return restService.exchange(url, 'GET', null, null)
             .then(response => Promise.resolve(this.mapResponseBody(response)))
