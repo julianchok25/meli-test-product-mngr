@@ -2,7 +2,6 @@ import {Router} from 'express';
 import { productController } from '../controllers/product.controller';
 import RoutesEnum from '../enums/routes.enum';
 import { validatorUtil } from '../utils/validators';
-// import { query } from 'express-validator';
 
 class IndexRouter {
 
@@ -14,7 +13,7 @@ class IndexRouter {
 
     private config(): void {
         this.router.get(RoutesEnum.Items, validatorUtil.validateQueryParam(),
-        productController.getProductBySearch);
+            productController.getProductBySearch);
     }
 }
 

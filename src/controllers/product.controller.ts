@@ -10,7 +10,6 @@ class ProductController {
     getProductBySearch(req: Request, response: Response) {
         debug('[NEW] get products.');
 
-        console.log('query params: ', req.query);
         productService.getProduct(req.query)
             .then(res => response.status(OK).send(res))
             .catch(error => response.status(INTERNAL_SERVER_ERROR).send(error));
