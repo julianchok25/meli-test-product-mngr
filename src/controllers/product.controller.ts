@@ -7,18 +7,18 @@ const debug = debugLib('meli:ProductController');
 
 class ProductController {
 
-    getProductBySearch(req: Request, response: Response) {
-        debug('[NEW] get products By search.');
+    getProductsBySearch(req: Request, response: Response) {
+        debug('[NEW] get products By search: %s', req.query.q);
 
-        productService.getProduct(req.query)
+        productService.getProducts(req.query)
             .then(res => response.status(OK).send(res))
             .catch(error => response.status(INTERNAL_SERVER_ERROR).send(error));
     }
 
     getProductById(req: Request, response: Response) {
-        debug('[NEW] get products By ID.');
+        debug('[NEW] get product By ID with its Description: %s', req.params.id);
 
-        productService.getProductById(req.params)
+        productService.getProductDetailsById(req.params)
             .then(res => response.status(OK).send(res))
             .catch(error => response.status(INTERNAL_SERVER_ERROR).send(error));
     }

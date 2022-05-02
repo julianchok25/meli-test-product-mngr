@@ -4,6 +4,9 @@ import { CommonCategoryModel, FiltersCategoryModel, ValuesCategoriesModel } from
 import { ProductsRsModel, ItemModel, ProductRsModel, CurrencyModel } from '../models/items.model';
 import { helpers } from '../utils/helpers';
 import { restService } from './rest.service';
+import debugLib from 'debug';
+
+const debug = debugLib('meli:ProductService');
 
 class ProductService {
 
@@ -15,15 +18,15 @@ class ProductService {
                 items: this.getItemsData(response.results)
             };
         },
-        'items': (response: any): ProductRsModel => {
+        'items': (response: any, itemDescription: string): ProductRsModel => {
             return {
                 author: AUTHORS.find(author => author.id === '0') || DEFAULT_AUTHOR,
-                item: this.getItemData(response)
+                item: this.getItemData(response, itemDescription)
             };
         }
     };
 
-    public async getProduct(queryParams: any): Promise<any> {
+    public async getProducts(queryParams: any): Promise<any> {
 
         const url = `${SERVICES_PATHS.productSearch}?q=${queryParams.q}`;
 
@@ -32,12 +35,35 @@ class ProductService {
             .catch(error => Promise.reject(error));
     }
 
-    public async getProductById(paramID: any): Promise<any> {
+    public async getProductDetailsById(paramID: any): Promise<any> {
 
-        const url = `${SERVICES_PATHS.items}/${paramID.id}`;
+        try {
+            const itemParamDescription = await this.getProductDescription(paramID.id);
+            const serviceResponse = await this.getProductById(paramID.id, itemParamDescription);
+
+            return serviceResponse;
+        } catch (error) {
+            throw new Error(`Could not get item details: ${error}`);
+        }
+    }
+
+    private async getProductDescription(param: string): Promise<any> {
+        debug('Getting product Description');
+
+        const url = `${SERVICES_PATHS.items}/${param}/description`;
 
         return restService.exchange(url, 'GET', null, null)
-            .then(response => Promise.resolve(this.MAP_RESOURCES.items(response)))
+            .then(response => Promise.resolve(response))
+            .catch(error => Promise.reject(error));
+    }
+
+    private async getProductById(param: string, itemDescription: any): Promise<any> {
+        debug('Getting product By ID');
+
+        const url = `${SERVICES_PATHS.items}/${param}`;
+
+        return restService.exchange(url, 'GET', null, null)
+            .then(response => Promise.resolve(this.MAP_RESOURCES.items(response, itemDescription.plain_text)))
             .catch(error => Promise.reject(error));
     }
 
@@ -69,7 +95,7 @@ class ProductService {
         });
     }
 
-    private getItemData(object: any): ItemModel {
+    private getItemData(object: any, description: string): ItemModel {
         return {
             id: object.id,
             title: object.title,
@@ -81,7 +107,8 @@ class ProductService {
             picture: object.thumbnail,
             condition: object.condition,
             freeShipping: object.shipping.free_shipping,
-            soldQuantity: object.sold_quantity
+            soldQuantity: object.sold_quantity,
+            description
         };
     }
 
