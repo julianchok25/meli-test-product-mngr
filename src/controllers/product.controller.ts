@@ -8,9 +8,17 @@ const debug = debugLib('meli:ProductController');
 class ProductController {
 
     getProductBySearch(req: Request, response: Response) {
-        debug('[NEW] get products.');
+        debug('[NEW] get products By search.');
 
         productService.getProduct(req.query)
+            .then(res => response.status(OK).send(res))
+            .catch(error => response.status(INTERNAL_SERVER_ERROR).send(error));
+    }
+
+    getProductById(req: Request, response: Response) {
+        debug('[NEW] get products By ID.');
+
+        productService.getProductById(req.params)
             .then(res => response.status(OK).send(res))
             .catch(error => response.status(INTERNAL_SERVER_ERROR).send(error));
     }

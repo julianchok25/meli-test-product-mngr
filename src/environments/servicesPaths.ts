@@ -1,3 +1,7 @@
+import { ENDPOINTS } from './environment';
+
 export const SERVICES_PATHS = {
-    productSearch: 'https://api.mercadolibre.com/sites/MLA/search'
+    productSearch: `${ENDPOINTS.meli}/sites/MLA/search`,
+    items: `${ENDPOINTS.meli}/items`,
+    itemsDescription: `${ENDPOINTS.meli}/items/description`,
 };

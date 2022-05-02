@@ -14,6 +14,7 @@ class IndexRouter {
     private config(): void {
         this.router.get(RoutesEnum.Items, validatorUtil.validateQueryParam(),
             productController.getProductBySearch);
+        this.router.get(`${RoutesEnum.Items}/:id`, productController.getProductById);
     }
 }
 
