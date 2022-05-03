@@ -5,32 +5,20 @@ import cors from 'cors';
 import debugLib from 'debug';
 
 import indexRouter from './routes/index.router';
+import { helpers } from './utils/helpers';
 
 const debug = debugLib('meli:index');
 const app = express();
 
 const PORT = process.env.PORT || '3000';
 const API_PATH = '/api';
-// const LOCAL_SERVER = 'http://localhost:3000';
 
 app.use(express.json());
 app.use(logger('dev'));
 app.use(helmet());
 app.use(express.urlencoded({extended: false}));
 
-/*const whitelist = ['*'];
-const corsOptions = {
-  origin: (origin: any, callback: any) => {
-      console.log('origin', origin);
-      
-    if (whitelist.indexOf(origin) !== -1 && origin !== LOCAL_SERVER) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}; */
-app.use(cors({origin: '*'}));
+app.use(cors(helpers.addCorsWhiteList([], true)));
 
 app.use(API_PATH, indexRouter);
 app.use((req, res) => {
