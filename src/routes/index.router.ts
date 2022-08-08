@@ -12,6 +12,9 @@ class IndexRouter {
     }
 
     private config(): void {
+        this.router.get(RoutesEnum.Root, (_request, response) => {
+            response.json({ message: "Welcome to the main application" });
+          });
         this.router.get(RoutesEnum.Items, validatorUtil.validateQueryParam(),
             productController.getProductsBySearch);
         this.router.get(`${RoutesEnum.Items}/:id`, productController.getProductById);

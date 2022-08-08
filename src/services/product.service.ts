@@ -73,8 +73,11 @@ class ProductService {
         filters.filter(item => item.id === 'category')
             .forEach((category: FiltersCategoryModel) => {
                 category.values.forEach((item: ValuesCategoriesModel) => {
-                    item.path_from_root.forEach((element: CommonCategoryModel ) => {
-                        categories.push(element.name);
+                    categories.push(item.name);
+                    item.path_from_root.forEach((element: CommonCategoryModel) => {
+                        if(element.id !== item.id) {
+                            categories.push(element.name);
+                        }
                     });
                 });
             });
